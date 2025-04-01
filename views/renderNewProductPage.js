@@ -8,19 +8,18 @@ module.exports = (res, data) => {
     '<nav><a href="/">Home</a><br /><a href="/product/add">Add product</a><br /><a href="/logout">Logout</a></nav>'
   )
 
-  if (!data || data.trim() === '') {
-    // Obsługuje przypadek, gdy plik jest pusty lub nie zawiera danych
-    res.write('<br /><div>No new products available.</div>')
-  } else {
+  if (data) {
     const productData = data
-      .split(',')
+      .split('\n')
       .map((item) => item.trim())
+      .filter((item) => item.length > 0)
       .join('<br />')
-    res.write(`<br /><div>New product data: <br />${productData}</div>`)
+    res.write(`<br /><div>New product data - ${productData}</div>`)
+  } else {
+    res.write('<br /><div>No new products available.</div>')
   }
 
   res.write('</body>')
   res.write('</html>')
-
   res.end()
 }

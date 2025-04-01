@@ -1,23 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Shop - Add product</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop - Add Product</title>
   </head>
   <body>
-    <h1>Add product</h1>
+    <h1>Add Product</h1>
     <form action="/product/add" method="POST">
+      <label for="productName">Name:</label>
       <br />
-      <label>Name<br /><input type="text" name="name" required /></label>
+      <input type="text" id="productName" name="name" required />
+      <br /><br />
+      <label for="productDescription">Description:</label>
       <br />
-      <label
-        >Description<br /><input type="text" name="description" required
-      /></label>
-      <br />
-      <button type="submit">Add</button>
+      <textarea id="productDescription" name="description" required></textarea>
+      <br /><br />
+      <button type="submit">Add Product</button>
     </form>
+
     <nav>
       <a href="/">Home</a><br />
-      <a href="/product/new">Newest product</a><br />
+      <a href="/product/new">Newest Product</a><br />
       <a href="/logout">Logout</a>
     </nav>
   </body>

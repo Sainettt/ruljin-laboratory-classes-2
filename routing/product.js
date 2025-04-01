@@ -12,7 +12,6 @@ router.get('/add', (req, res) => {
 router.post('/add', (req, res) => {
   const body = []
 
-  // Чтение данных из формы
   req.on('data', (chunk) => {
     body.push(chunk)
   })
@@ -27,20 +26,22 @@ router.post('/add', (req, res) => {
       })
       .join(', ')
 
-    // Добавление новых данных в конец файла
     fs.appendFile(
       path.join(__dirname, '..', 'product.txt'),
       formData + '\n',
       (err) => {
         if (err) {
-          console.error('Error writing file', err)
-          return res.status(500).send('Internal Server Error')
+          console.error('Error writing to file:', err)
+          return res
+            .status(STATUS_CODE.FOUND)
+            .setHeader('Location', '/product/new')
+            .end()
         }
 
-        // Перенаправление на страницу с новым продуктом
-        res.status(302) // Код для перенаправления
-        res.setHeader('Location', '/product/new')
-        res.end()
+        res
+          .status(STATUS_CODE.FOUND)
+          .setHeader('Location', '/product/new')
+          .end()
       }
     )
   })
@@ -52,7 +53,7 @@ router.get('/new', (req, res) => {
     'utf-8',
     (err, data) => {
       if (err || !data) {
-        res.send('No new products available.')
+        renderNewProductPage(res, null)
       } else {
         renderNewProductPage(res, data)
       }
