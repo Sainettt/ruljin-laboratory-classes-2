@@ -1,8 +1,11 @@
 const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
-const logger = require('morgan')
-const http = require('http')
+const logger = require('./utils/logger')
+const homeRoutes = require('./routing/home')
+const productRoutes = require('./routing/product')
+const logoutRoutes = require('./routing/logout')
+const killRoutes = require('./routing/kill')
 const { PORT } = require('./config')
 const { STATUS_CODE } = require('./constants/statusCode')
 
