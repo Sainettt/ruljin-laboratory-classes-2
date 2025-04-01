@@ -11,7 +11,12 @@ router.get('/add', (req, res) => {
 
 router.post('/add', (req, res) => {
   const body = []
-  req.on('data', (chunk) => body.push(chunk))
+
+  // Чтение данных из формы
+  req.on('data', (chunk) => {
+    body.push(chunk)
+  })
+
   req.on('end', () => {
     const parsedBody = Buffer.concat(body).toString()
     const formData = parsedBody
@@ -22,17 +27,20 @@ router.post('/add', (req, res) => {
       })
       .join(', ')
 
+    // Добавление новых данных в конец файла
     fs.appendFile(
       path.join(__dirname, '..', 'product.txt'),
       formData + '\n',
       (err) => {
         if (err) {
-          return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).end()
+          console.error('Error writing file', err)
+          return res.status(500).send('Internal Server Error')
         }
-        res
-          .status(STATUS_CODE.FOUND)
-          .setHeader('Location', '/product/new')
-          .end()
+
+        // Перенаправление на страницу с новым продуктом
+        res.status(302) // Код для перенаправления
+        res.setHeader('Location', '/product/new')
+        res.end()
       }
     )
   })
